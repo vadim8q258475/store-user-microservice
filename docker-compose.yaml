@@ -1,0 +1,67 @@
+version: '3.0'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"] 
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    networks:
+      - store-net
+  user1:
+    build: .
+    container_name: user-store-microservice-container-1
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - store-net
+  user2:
+    build: .
+    container_name: user-store-microservice-container-2
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - store-net
+  user3:
+    build: .
+    container_name: user-store-microservice-container-3
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - store-net
+  user-nginx:
+    image: nginx
+    ports:
+      - "1234:1234"
+    volumes:
+      - ./user-nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - store-net
+    depends_on:
+      - user1
+      - user2
+      - user3
+
+networks:
+  store-net:
+    external: true
+    name: store-net
