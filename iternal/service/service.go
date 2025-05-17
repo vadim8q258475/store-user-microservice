@@ -7,6 +7,8 @@ import (
 	gen "github.com/vadim8q258475/store-user-microservice/gen/v1"
 	"github.com/vadim8q258475/store-user-microservice/iternal/repo"
 	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type Service interface {
@@ -35,7 +37,11 @@ func (s *service) List(ctx context.Context) ([]*ent.User, error) {
 }
 
 func (s *service) GetByEmail(ctx context.Context, req *gen.GetByEmail_Request) (*ent.User, error) {
-	return s.repo.GetByEmail(ctx, req.Email)
+	user, err := s.repo.GetByEmail(ctx, req.Email)
+	if ent.IsNotFound(err) {
+		return nil, status.Error(codes.NotFound, "user not found")
+	}
+	return user, err
 }
 
 func (s *service) GetByID(ctx context.Context, req *gen.GetByID_Request) (*ent.User, error) {
@@ -43,7 +49,11 @@ func (s *service) GetByID(ctx context.Context, req *gen.GetByID_Request) (*ent.U
 	if err != nil {
 		return nil, err
 	}
-	return s.repo.GetByID(ctx, id)
+	user, err := s.repo.GetByID(ctx, id)
+	if ent.IsNotFound(err) {
+		return nil, status.Error(codes.NotFound, "user not found")
+	}
+	return user, err
 }
 
 func (s *service) Update(ctx context.Context, req *gen.Update_Request) (*ent.User, error) {
