@@ -3,8 +3,8 @@
 package ent
 
 import (
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/schema"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/user"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/schema"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

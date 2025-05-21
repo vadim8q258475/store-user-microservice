@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/vadim8q258475/store-user-microservice/iternal/cacher"
-	gen "github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/cacher"
+	gen "github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 )
 
 const listKey = "list"
@@ -83,11 +83,11 @@ func (p *proxy) GetByEmail(ctx context.Context, email string) (*gen.User, error)
 		}
 		return nil, err
 	}
-	var result *gen.User
+	var result gen.User
 	err = json.Unmarshal(value, &result)
-	return result, err
+	return &result, err
 }
-func (p *proxy) GetByID(ctx context.Context, id int) (*gen.User, error) {
+func (p *proxy) GetByID(ctx context.Context, id uint32) (*gen.User, error) {
 	key := fmt.Sprintf("%s%d", idKeyPrefix, id)
 	value, err := p.cacher.Get(ctx, key)
 	if err != nil {
@@ -112,7 +112,7 @@ func (p *proxy) GetByID(ctx context.Context, id int) (*gen.User, error) {
 	err = json.Unmarshal(value, &result)
 	return result, err
 }
-func (p *proxy) Update(ctx context.Context, id int, email, password string) (*gen.User, error) {
+func (p *proxy) Update(ctx context.Context, id uint32, email, password string) (*gen.User, error) {
 	result, err := p.repo.Update(ctx, id, email, password)
 	if err != nil {
 		return nil, err
@@ -125,7 +125,7 @@ func (p *proxy) Update(ctx context.Context, id int, email, password string) (*ge
 	}
 	return result, err
 }
-func (p *proxy) Delete(ctx context.Context, id int) error {
+func (p *proxy) Delete(ctx context.Context, id uint32) error {
 	result, err := p.repo.GetByID(ctx, id)
 	if err != nil {
 		return err

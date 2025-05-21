@@ -23,7 +23,7 @@ const (
 
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -60,11 +60,11 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetId() string {
+func (x *User) GetId() uint32 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *User) GetEmail() string {
@@ -431,7 +431,7 @@ func (x *Create_Request) GetPassword() string {
 
 type Create_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -466,16 +466,16 @@ func (*Create_Response) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{2, 1}
 }
 
-func (x *Create_Response) GetId() string {
+func (x *Create_Response) GetId() uint32 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type Delete_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -510,16 +510,15 @@ func (*Delete_Request) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{3, 0}
 }
 
-func (x *Delete_Request) GetEmail() string {
+func (x *Delete_Request) GetId() uint32 {
 	if x != nil {
-		return x.Email
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type Delete_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        int32                  `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -552,13 +551,6 @@ func (x *Delete_Response) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Delete_Response.ProtoReflect.Descriptor instead.
 func (*Delete_Response) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{3, 1}
-}
-
-func (x *Delete_Response) GetStatus() int32 {
-	if x != nil {
-		return x.Status
-	}
-	return 0
 }
 
 type GetByEmail_Request struct {
@@ -607,9 +599,7 @@ func (x *GetByEmail_Request) GetEmail() string {
 
 type GetByEmail_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -644,30 +634,16 @@ func (*GetByEmail_Response) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{4, 1}
 }
 
-func (x *GetByEmail_Response) GetId() string {
+func (x *GetByEmail_Response) GetUser() *User {
 	if x != nil {
-		return x.Id
+		return x.User
 	}
-	return ""
-}
-
-func (x *GetByEmail_Response) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *GetByEmail_Response) GetPassword() string {
-	if x != nil {
-		return x.Password
-	}
-	return ""
+	return nil
 }
 
 type GetByID_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -702,18 +678,16 @@ func (*GetByID_Request) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{5, 0}
 }
 
-func (x *GetByID_Request) GetId() string {
+func (x *GetByID_Request) GetId() uint32 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type GetByID_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -748,32 +722,16 @@ func (*GetByID_Response) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{5, 1}
 }
 
-func (x *GetByID_Response) GetId() string {
+func (x *GetByID_Response) GetUser() *User {
 	if x != nil {
-		return x.Id
+		return x.User
 	}
-	return ""
-}
-
-func (x *GetByID_Response) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *GetByID_Response) GetPassword() string {
-	if x != nil {
-		return x.Password
-	}
-	return ""
+	return nil
 }
 
 type Update_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -808,30 +766,16 @@ func (*Update_Request) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{6, 0}
 }
 
-func (x *Update_Request) GetId() string {
+func (x *Update_Request) GetUser() *User {
 	if x != nil {
-		return x.Id
+		return x.User
 	}
-	return ""
-}
-
-func (x *Update_Request) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *Update_Request) GetPassword() string {
-	if x != nil {
-		return x.Password
-	}
-	return ""
+	return nil
 }
 
 type Update_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -866,11 +810,11 @@ func (*Update_Response) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{6, 1}
 }
 
-func (x *Update_Response) GetId() string {
+func (x *Update_Response) GetId() uint32 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 var File_user_proto protoreflect.FileDescriptor
@@ -880,7 +824,7 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"user.proto\x12\x04user\"H\n" +
 	"\x04User\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\"?\n" +
 	"\x04List\x1a\t\n" +
@@ -893,34 +837,31 @@ const file_user_proto_rawDesc = "" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x1a\x1a\n" +
 	"\bResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"M\n" +
-	"\x06Delete\x1a\x1f\n" +
-	"\aRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x1a\"\n" +
-	"\bResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\x05R\x06status\"{\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"/\n" +
+	"\x06Delete\x1a\x19\n" +
+	"\aRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\x1a\n" +
+	"\n" +
+	"\bResponse\"Y\n" +
 	"\n" +
 	"GetByEmail\x1a\x1f\n" +
 	"\aRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x1aL\n" +
-	"\bResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\"r\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x1a*\n" +
+	"\bResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".user.UserR\x04user\"P\n" +
 	"\aGetByID\x1a\x19\n" +
 	"\aRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x1aL\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\x1a*\n" +
+	"\bResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".user.UserR\x04user\"O\n" +
+	"\x06Update\x1a)\n" +
+	"\aRequest\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".user.UserR\x04user\x1a\x1a\n" +
 	"\bResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\"q\n" +
-	"\x06Update\x1aK\n" +
-	"\aRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\x1a\x1a\n" +
-	"\bResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xe0\x02\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id2\xe0\x02\n" +
 	"\vUserService\x12/\n" +
 	"\x04List\x12\x12.user.List.Request\x1a\x13.user.List.Response\x125\n" +
 	"\x06Create\x12\x14.user.Create.Request\x1a\x15.user.Create.Response\x125\n" +
@@ -967,23 +908,26 @@ var file_user_proto_goTypes = []any{
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: user.List.Response.users:type_name -> user.User
-	7,  // 1: user.UserService.List:input_type -> user.List.Request
-	9,  // 2: user.UserService.Create:input_type -> user.Create.Request
-	11, // 3: user.UserService.Delete:input_type -> user.Delete.Request
-	13, // 4: user.UserService.GetByEmail:input_type -> user.GetByEmail.Request
-	15, // 5: user.UserService.GetByID:input_type -> user.GetByID.Request
-	17, // 6: user.UserService.Update:input_type -> user.Update.Request
-	8,  // 7: user.UserService.List:output_type -> user.List.Response
-	10, // 8: user.UserService.Create:output_type -> user.Create.Response
-	12, // 9: user.UserService.Delete:output_type -> user.Delete.Response
-	14, // 10: user.UserService.GetByEmail:output_type -> user.GetByEmail.Response
-	16, // 11: user.UserService.GetByID:output_type -> user.GetByID.Response
-	18, // 12: user.UserService.Update:output_type -> user.Update.Response
-	7,  // [7:13] is the sub-list for method output_type
-	1,  // [1:7] is the sub-list for method input_type
-	1,  // [1:1] is the sub-list for extension type_name
-	1,  // [1:1] is the sub-list for extension extendee
-	0,  // [0:1] is the sub-list for field type_name
+	0,  // 1: user.GetByEmail.Response.user:type_name -> user.User
+	0,  // 2: user.GetByID.Response.user:type_name -> user.User
+	0,  // 3: user.Update.Request.user:type_name -> user.User
+	7,  // 4: user.UserService.List:input_type -> user.List.Request
+	9,  // 5: user.UserService.Create:input_type -> user.Create.Request
+	11, // 6: user.UserService.Delete:input_type -> user.Delete.Request
+	13, // 7: user.UserService.GetByEmail:input_type -> user.GetByEmail.Request
+	15, // 8: user.UserService.GetByID:input_type -> user.GetByID.Request
+	17, // 9: user.UserService.Update:input_type -> user.Update.Request
+	8,  // 10: user.UserService.List:output_type -> user.List.Response
+	10, // 11: user.UserService.Create:output_type -> user.Create.Response
+	12, // 12: user.UserService.Delete:output_type -> user.Delete.Response
+	14, // 13: user.UserService.GetByEmail:output_type -> user.GetByEmail.Response
+	16, // 14: user.UserService.GetByID:output_type -> user.GetByID.Response
+	18, // 15: user.UserService.Update:output_type -> user.Update.Response
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }

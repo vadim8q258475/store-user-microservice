@@ -8,8 +8,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/predicate"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/user"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/predicate"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/user"
 )
 
 // UserDelete is the builder for deleting a User entity.

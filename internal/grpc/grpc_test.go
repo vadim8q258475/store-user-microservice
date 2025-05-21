@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	userpbv1 "github.com/vadim8q258475/store-user-microservice/gen/v1"
-	"github.com/vadim8q258475/store-user-microservice/iternal/grpc/tests/mocks"
-	repoGen "github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
-	"github.com/vadim8q258475/store-user-microservice/iternal/service"
+	"github.com/vadim8q258475/store-user-microservice/internal/grpc/tests/mocks"
+	repoGen "github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/service"
 	"go.uber.org/mock/gomock"
 )
 
@@ -19,6 +19,7 @@ func TestGrpcService_Create(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
+	var id uint32 = 0
 	email := "email1"
 	password := "password1"
 
@@ -30,7 +31,7 @@ func TestGrpcService_Create(t *testing.T) {
 	response, err := grpcService.Create(ctx, &userpbv1.Create_Request{Email: email, Password: password})
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
-	assert.Equal(t, "0", response.Id)
+	assert.Equal(t, id, response.Id)
 
 	// create err
 	mockRepo.EXPECT().
@@ -48,28 +49,28 @@ func TestGrpcService_GetByID(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
-	id := 0
-	strID := "0"
+	var id uint32 = 0
+	var notValidId uint32 = 404
 	email := "email1"
 	password := "password1"
 
 	// get ok
 	mockRepo.EXPECT().
 		GetByID(ctx, id).
-		Return(&repoGen.User{ID: id, Email: email, Password: password}, nil)
+		Return(&repoGen.User{ID: int(id), Email: email, Password: password}, nil)
 
-	response, err := grpcService.GetByID(ctx, &userpbv1.GetByID_Request{Id: strID})
+	response, err := grpcService.GetByID(ctx, &userpbv1.GetByID_Request{Id: id})
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
-	assert.Equal(t, strID, response.Id)
-	assert.Equal(t, email, response.Email)
-	assert.Equal(t, password, response.Password)
+	assert.Equal(t, id, response.User.Id)
+	assert.Equal(t, email, response.User.Email)
+	assert.Equal(t, password, response.User.Password)
 
 	// get err
 	mockRepo.EXPECT().
-		GetByID(ctx, -1).
+		GetByID(ctx, notValidId).
 		Return(nil, assert.AnError)
-	response, err = grpcService.GetByID(ctx, &userpbv1.GetByID_Request{Id: "-1"})
+	response, err = grpcService.GetByID(ctx, &userpbv1.GetByID_Request{Id: notValidId})
 	assert.Error(t, err)
 	assert.Nil(t, response)
 }
@@ -81,22 +82,21 @@ func TestGrpcService_GetByEmail(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
-	id := 0
-	strID := "0"
+	var id uint32 = 0
 	email := "email1"
 	password := "password1"
 
 	// get ok
 	mockRepo.EXPECT().
 		GetByEmail(ctx, email).
-		Return(&repoGen.User{ID: id, Email: email, Password: password}, nil)
+		Return(&repoGen.User{ID: int(id), Email: email, Password: password}, nil)
 
 	response, err := grpcService.GetByEmail(ctx, &userpbv1.GetByEmail_Request{Email: email})
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
-	assert.Equal(t, strID, response.Id)
-	assert.Equal(t, email, response.Email)
-	assert.Equal(t, password, response.Password)
+	assert.Equal(t, id, response.User.Id)
+	assert.Equal(t, email, response.User.Email)
+	assert.Equal(t, password, response.User.Password)
 
 	// get err
 	mockRepo.EXPECT().
@@ -114,6 +114,7 @@ func TestGrpcService_List(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
+	var id uint32 = 0
 
 	repoList := []*repoGen.User{
 		{ID: 0, Email: "email1", Password: "pass1"},
@@ -128,7 +129,7 @@ func TestGrpcService_List(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
-	assert.Equal(t, "0", response.Users[0].Id)
+	assert.Equal(t, id, response.Users[0].Id)
 	assert.Equal(t, "email1", response.Users[0].Email)
 	assert.Equal(t, "pass1", response.Users[0].Password)
 
@@ -149,10 +150,9 @@ func TestGrpcService_Update(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
-	id := 0
-	strID := "0"
+	var id uint32 = 0
+	var notValidId uint32 = 404
 	email := "email1"
-	password := "password1"
 	newPassword := "newPassword1"
 
 	// create ok
@@ -160,16 +160,16 @@ func TestGrpcService_Update(t *testing.T) {
 		Update(ctx, id, email, newPassword).
 		Return(&repoGen.User{ID: 0, Email: email, Password: newPassword}, nil)
 
-	response, err := grpcService.Update(ctx, &userpbv1.Update_Request{Id: strID, Email: email, Password: newPassword})
+	response, err := grpcService.Update(ctx, &userpbv1.Update_Request{User: &userpbv1.User{Id: id, Email: email, Password: newPassword}})
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
-	assert.Equal(t, "0", response.Id)
+	assert.Equal(t, id, response.Id)
 
 	// Update err
 	mockRepo.EXPECT().
-		Update(ctx, -1, email, password).
+		Update(ctx, notValidId, email, newPassword).
 		Return(nil, assert.AnError)
-	response, err = grpcService.Update(ctx, &userpbv1.Update_Request{Id: "-1", Email: email, Password: password})
+	response, err = grpcService.Update(ctx, &userpbv1.Update_Request{User: &userpbv1.User{Id: notValidId, Email: email, Password: newPassword}})
 	assert.Error(t, err)
 	assert.Nil(t, response)
 }
@@ -181,35 +181,22 @@ func TestGrpcService_Delete(t *testing.T) {
 	service := service.NewService(mockRepo)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
-	id := 0
-	email := "email1"
-	password := "password1"
+	var id uint32 = 404
 
 	// delete ok
 	mockRepo.EXPECT().
 		Delete(ctx, id).
 		Return(nil)
 
-	mockRepo.EXPECT().
-		GetByEmail(ctx, email).
-		Return(&repoGen.User{ID: id, Email: email, Password: password}, nil)
-
-	response, err := grpcService.Delete(ctx, &userpbv1.Delete_Request{Email: email})
+	_, err := grpcService.Delete(ctx, &userpbv1.Delete_Request{Id: id})
 	assert.NoError(t, err)
-	assert.NotNil(t, response)
-	assert.Equal(t, int32(200), response.Status)
 
 	// delete err
 	mockRepo.EXPECT().
 		Delete(ctx, id).
 		Return(assert.AnError)
 
-	mockRepo.EXPECT().
-		GetByEmail(ctx, email).
-		Return(&repoGen.User{ID: id, Email: email, Password: password}, nil)
-
-	response, err = grpcService.Delete(ctx, &userpbv1.Delete_Request{Email: email})
+	_, err = grpcService.Delete(ctx, &userpbv1.Delete_Request{Id: id})
 
 	assert.Error(t, err)
-	assert.Nil(t, response)
 }

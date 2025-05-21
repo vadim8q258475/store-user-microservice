@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	ent "github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	ent "github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -57,7 +57,7 @@ func (mr *MockRepoMockRecorder) Create(ctx, email, password any) *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockRepo) Delete(ctx context.Context, id int) error {
+func (m *MockRepo) Delete(ctx context.Context, id uint32) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
@@ -86,7 +86,7 @@ func (mr *MockRepoMockRecorder) GetByEmail(ctx, email any) *gomock.Call {
 }
 
 // GetByID mocks base method.
-func (m *MockRepo) GetByID(ctx context.Context, id int) (*ent.User, error) {
+func (m *MockRepo) GetByID(ctx context.Context, id uint32) (*ent.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", ctx, id)
 	ret0, _ := ret[0].(*ent.User)
@@ -116,7 +116,7 @@ func (mr *MockRepoMockRecorder) List(ctx any) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockRepo) Update(ctx context.Context, id int, email, password string) (*ent.User, error) {
+func (m *MockRepo) Update(ctx context.Context, id uint32, email, password string) (*ent.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, id, email, password)
 	ret0, _ := ret[0].(*ent.User)

@@ -10,8 +10,8 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/predicate"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/user"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/predicate"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/user"
 )
 
 const (

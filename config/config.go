@@ -38,7 +38,7 @@ func (c Config) String() string {
 	sb.WriteString(fmt.Sprintf("CACHE_HOST %s\n", c.CacheHost))
 	sb.WriteString(fmt.Sprintf("CACHE_PORT: %s\n", c.CachePort))
 
-	sb.WriteString("MAIN\n")
+	sb.WriteString("APP\n")
 	sb.WriteString(fmt.Sprintf("PORT: %s\n", c.Port))
 
 	return sb.String()

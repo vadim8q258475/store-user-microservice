@@ -2,7 +2,6 @@ package cacher
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -32,7 +31,6 @@ func (c *cacher) Get(ctx context.Context, key string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("get from cache by key %s\n", key)
 	return value, nil
 }
 
@@ -41,19 +39,13 @@ func (c *cacher) Set(ctx context.Context, key string, value []byte) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("set to cache by key %s\n", key)
 	return nil
 }
 
 func (c *cacher) Delete(ctx context.Context, keys ...string) error {
 	err := c.client.Del(ctx, keys...).Err()
-	fmt.Println("before error")
 	if err != nil {
 		return err
-	}
-	fmt.Println("after aerror")
-	for _, key := range keys {
-		fmt.Printf("delete by key %s\n", key)
 	}
 	return nil
 }

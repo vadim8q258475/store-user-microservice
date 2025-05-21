@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"strconv"
 
 	gen "github.com/vadim8q258475/store-user-microservice/gen/v1"
 	"github.com/vadim8q258475/store-user-microservice/iternal/repo"
@@ -45,11 +44,7 @@ func (s *service) GetByEmail(ctx context.Context, req *gen.GetByEmail_Request) (
 }
 
 func (s *service) GetByID(ctx context.Context, req *gen.GetByID_Request) (*ent.User, error) {
-	id, err := strconv.Atoi(req.Id)
-	if err != nil {
-		return nil, err
-	}
-	user, err := s.repo.GetByID(ctx, id)
+	user, err := s.repo.GetByID(ctx, req.Id)
 	if ent.IsNotFound(err) {
 		return nil, status.Error(codes.NotFound, "user not found")
 	}
@@ -57,17 +52,9 @@ func (s *service) GetByID(ctx context.Context, req *gen.GetByID_Request) (*ent.U
 }
 
 func (s *service) Update(ctx context.Context, req *gen.Update_Request) (*ent.User, error) {
-	id, err := strconv.Atoi(req.Id)
-	if err != nil {
-		return nil, err
-	}
-	return s.repo.Update(ctx, id, req.Email, req.Password)
+	return s.repo.Update(ctx, req.User.Id, req.User.Email, req.User.Password)
 }
 
 func (s *service) Delete(ctx context.Context, req *gen.Delete_Request) error {
-	user, err := s.repo.GetByEmail(ctx, req.Email)
-	if err != nil {
-		return err
-	}
-	return s.repo.Delete(ctx, user.ID)
+	return s.repo.Delete(ctx, req.Id)
 }

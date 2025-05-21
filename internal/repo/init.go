@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/vadim8q258475/store-user-microservice/config"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 )
 
 func InitDB(cfg config.Config) (*ent.Client, error) {

@@ -9,12 +9,12 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/migrate"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/user"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/user"
 )
 
 // Client is the client that holds all ent builders.

@@ -8,7 +8,7 @@ import (
 
 	"github.com/vadim8q258475/store-user-microservice/config"
 	gen "github.com/vadim8q258475/store-user-microservice/gen/v1"
-	grpcService "github.com/vadim8q258475/store-user-microservice/iternal/grpc"
+	grpcService "github.com/vadim8q258475/store-user-microservice/internal/grpc"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
