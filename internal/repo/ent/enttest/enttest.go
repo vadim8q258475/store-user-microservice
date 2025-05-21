@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 	// required by schema hooks.
-	_ "github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/runtime"
+	_ "github.com/vadim8q258475/store-user-microservice/internal/repo/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent/migrate"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent/migrate"
 )
 
 type (

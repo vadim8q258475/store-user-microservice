@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

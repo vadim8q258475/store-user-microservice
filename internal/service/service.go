@@ -4,8 +4,8 @@ import (
 	"context"
 
 	gen "github.com/vadim8q258475/store-user-microservice/gen/v1"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo"
-	"github.com/vadim8q258475/store-user-microservice/iternal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo"
+	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
