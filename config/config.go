@@ -18,6 +18,12 @@ type Config struct {
 	CacheHost    string `env:"CACHE_HOST,required"`
 	CachePort    string `env:"CACHE_PORT,required"`
 
+	RabbitMQQueueName string `env:"RABBITMQ_QUEUE_NAME,required"`
+	RabbitMQHost      string `env:"RABBITMQ_HOST,required"`
+	RabbitMQPort      string `env:"RABBITMQ_PORT,required"`
+	RabbitMQUser      string `env:"RABBITMQ_USER,required"`
+	RabbitMQPassword  string `env:"RABBITMQ_PASSWORD,required"`
+
 	Port string `env:"PORT,required"`
 }
 
@@ -37,6 +43,13 @@ func (c Config) String() string {
 	sb.WriteString(fmt.Sprintf("CACHE_MINUTES: %d\n", c.CacheMinutes))
 	sb.WriteString(fmt.Sprintf("CACHE_HOST %s\n", c.CacheHost))
 	sb.WriteString(fmt.Sprintf("CACHE_PORT: %s\n", c.CachePort))
+
+	sb.WriteString("RABBIT_MQ\n")
+	sb.WriteString(fmt.Sprintf("QUEUE_NAME: %s\n", c.RabbitMQQueueName))
+	sb.WriteString(fmt.Sprintf("HOST: %s\n", c.RabbitMQHost))
+	sb.WriteString(fmt.Sprintf("PORT: %s\n", c.RabbitMQPort))
+	sb.WriteString(fmt.Sprintf("USER: %s\n", c.RabbitMQUser))
+	sb.WriteString(fmt.Sprintf("PASSWORD: %s\n", c.RabbitMQPassword))
 
 	sb.WriteString("APP\n")
 	sb.WriteString(fmt.Sprintf("PORT: %s\n", c.Port))

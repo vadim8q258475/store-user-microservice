@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	gen "github.com/vadim8q258475/store-user-microservice/gen/v1"
 	"github.com/vadim8q258475/store-user-microservice/internal/repo"
 	"github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
+	"github.com/vadim8q258475/store-user-microservice/queue"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -20,15 +22,27 @@ type Service interface {
 }
 
 type service struct {
-	repo repo.Repo
+	repo      repo.Repo
+	publisher queue.Publisher
 }
 
-func NewService(repo repo.Repo) Service {
-	return &service{repo: repo}
+func NewService(repo repo.Repo, publisher queue.Publisher) Service {
+	return &service{
+		repo:      repo,
+		publisher: publisher,
+	}
 }
 
 func (s *service) Create(ctx context.Context, req *gen.Create_Request) (*ent.User, error) {
-	return s.repo.Create(ctx, req.Email, req.Password)
+	user, err := s.repo.Create(ctx, req.Email, req.Password)
+	if err != nil {
+		return nil, err
+	}
+	err = s.publisher.Publish(ctx, []byte(strconv.Itoa(user.ID)))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (s *service) List(ctx context.Context) ([]*ent.User, error) {

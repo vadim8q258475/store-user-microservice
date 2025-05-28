@@ -6,9 +6,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	userpbv1 "github.com/vadim8q258475/store-user-microservice/gen/v1"
-	"github.com/vadim8q258475/store-user-microservice/internal/grpc/tests/mocks"
+	mocks "github.com/vadim8q258475/store-user-microservice/internal/repo"
 	repoGen "github.com/vadim8q258475/store-user-microservice/internal/repo/ent"
 	"github.com/vadim8q258475/store-user-microservice/internal/service"
+	"github.com/vadim8q258475/store-user-microservice/queue"
 	"go.uber.org/mock/gomock"
 )
 
@@ -16,12 +17,15 @@ func TestGrpcService_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 0
 	email := "email1"
 	password := "password1"
+
+	mockPublisher.EXPECT().Publish(ctx, gomock.Any()).Return(nil)
 
 	// create ok
 	mockRepo.EXPECT().
@@ -46,7 +50,8 @@ func TestGrpcService_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 0
@@ -79,7 +84,8 @@ func TestGrpcService_GetByEmail(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 0
@@ -111,7 +117,8 @@ func TestGrpcService_List(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 0
@@ -147,7 +154,8 @@ func TestGrpcService_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 0
@@ -178,7 +186,8 @@ func TestGrpcService_Delete(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := mocks.NewMockRepo(ctrl)
-	service := service.NewService(mockRepo)
+	mockPublisher := queue.NewMockPublisher(ctrl)
+	service := service.NewService(mockRepo, mockPublisher)
 	grpcService := NewGrpcService(service)
 	ctx := context.Background()
 	var id uint32 = 404

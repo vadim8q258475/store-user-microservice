@@ -23,6 +23,7 @@ func (g *GrpcService) Create(ctx context.Context, req *gen.Create_Request) (*gen
 	if err != nil {
 		return nil, err
 	}
+
 	return &gen.Create_Response{Id: uint32(user.ID)}, nil
 }
 
